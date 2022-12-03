@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 const Header = () => {
     return (
         <div>
-            <NavLink to='/'>Home-registration</NavLink>
-            <NavLink to='/login'>Login</NavLink>
+            <NavLink className={({isActive}) => isActive ? 'activeLink' : undefined} to='/'>Home-registration</NavLink>
+            <NavLink className={({isActive}) => isActive ? 'activeLink' : undefined} to='/login'>Login</NavLink>
         </div>
     );
 };
