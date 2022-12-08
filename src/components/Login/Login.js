@@ -41,11 +41,19 @@ const Login = () => {
     }
 
     const handleResetPassword = () => {
+        if (!userEmail) {
+            alert('Please provide the Email in email field')
+            return;
+        }
+
         sendPasswordResetEmail(auth, userEmail)
-        .then(() => {
-            setResetEmail(true);
-        })
-        .catch(error => errorMessage(error.message))
+            .then(() => {
+                setResetEmail(true);
+            })
+            .catch(error => {
+                const errorText = error.message;
+                setErrorMessage(errorText)
+            })
     }
 
     return (
