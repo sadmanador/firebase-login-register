@@ -4,6 +4,8 @@ import { app } from '../../firebase/firebase.init';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 const auth = getAuth(app);
 
@@ -82,7 +84,8 @@ const Register = () => {
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder='Your email' name='email' required /><br />
                 <label htmlFor="password">Password</label>
-                <input type="password" placeholder='Your password' name='password' required /><br />
+                <input type="password" placeholder='Your password' name='password' required />
+                <FontAwesomeIcon icon={faEye}></FontAwesomeIcon><br />
                 <button type='submit'>Register</button>
             </form>
             {
