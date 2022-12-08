@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth, parseActionCodeURL, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, parseActionCodeURL, sendEmailVerification, updateProfile } from "firebase/auth";
 import { app } from '../../firebase/firebase.init';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -14,9 +14,10 @@ const Register = () => {
     const handleCreateUser = event => {
         event.preventDefault();
         const form = event.target;
+        const username = form.username.value;
+        const phone = form.phone.value;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password)
 
         //validation password with regex
         if (!/(?=.*[A-Z])/.test(password)) {
@@ -35,6 +36,7 @@ const Register = () => {
                 setUser(user);
                 form.reset();
                 verifyEmail();
+                updateUserInfo(username, phone);
                 console.log(user);
             })
             .catch(error => {
@@ -51,6 +53,19 @@ const Register = () => {
                 })
         }
 
+        const updateUserInfo = (username, phone) => {
+            updateProfile(auth.currentUser , {
+                displayName: username , phoneNumber: phone
+            })
+            .then(()=> {
+                console.log('User profile updated')
+            })
+            .catch(error => {
+                setErrorMessage(error.message)
+                console.error(error);
+            })
+        }
+
         //toast
         const notify = () => {
             toast('Email Verification send to you email')
@@ -63,6 +78,10 @@ const Register = () => {
                 user.uid ? <h2>Welcome <span style={{ color: 'green' }}>{user.email}</span></h2> : <h2>Please Register</h2>
             }
             <form onSubmit={handleCreateUser}>
+                <label htmlFor="username">User Name</label>
+                <input type="text" placeholder='Your User Name' name='username' required /><br />
+                <label htmlFor="phone">Phone</label>
+                <input type="number" placeholder='Your Phone Number' name='phone' required /><br />
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder='Your email' name='email' required /><br />
                 <label htmlFor="password">Password</label>
