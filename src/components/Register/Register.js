@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth, parseActionCodeURL, sendEmailVerification, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, updateProfile } from "firebase/auth";
 import { app } from '../../firebase/firebase.init';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -15,7 +15,6 @@ const Register = () => {
         event.preventDefault();
         const form = event.target;
         const username = form.username.value;
-        const phone = form.phone.value;
         const email = form.email.value;
         const password = form.password.value;
 
@@ -36,7 +35,7 @@ const Register = () => {
                 setUser(user);
                 form.reset();
                 verifyEmail();
-                updateUserInfo(username, phone);
+                updateUserInfo(username);
                 console.log(user);
             })
             .catch(error => {
@@ -53,9 +52,9 @@ const Register = () => {
                 })
         }
 
-        const updateUserInfo = (username, phone) => {
+        const updateUserInfo = (username) => {
             updateProfile(auth.currentUser , {
-                displayName: username , phoneNumber: phone
+                displayName: username
             })
             .then(()=> {
                 console.log('User profile updated')
@@ -80,8 +79,6 @@ const Register = () => {
             <form onSubmit={handleCreateUser}>
                 <label htmlFor="username">User Name</label>
                 <input type="text" placeholder='Your User Name' name='username' required /><br />
-                <label htmlFor="phone">Phone</label>
-                <input type="number" placeholder='Your Phone Number' name='phone' required /><br />
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder='Your email' name='email' required /><br />
                 <label htmlFor="password">Password</label>
